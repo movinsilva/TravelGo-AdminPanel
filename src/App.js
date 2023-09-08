@@ -6,6 +6,8 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { themeSettings } from "theme";
 import Dashboard from "scenes/dashboard";
 import Layout from "scenes/layout";
+import Schedule from "scenes/schedule";
+import TrainStops from "scenes/trainstops";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -20,6 +22,8 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/trainschedule" element={<Schedule />} />
+              <Route path="/trainstops" element={<TrainStops />} />
             </Route>
           </Routes>
         </ThemeProvider>
