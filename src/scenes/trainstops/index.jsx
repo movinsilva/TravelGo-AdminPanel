@@ -115,7 +115,7 @@ const TrainStops = () => {
           onSortModelChange={(newSortModel) => setSort(...newSortModel)}
           slots={{ toolbar: DataGridCustomToolbar }}
           slotProps={{
-            toolbar: { searchInput, setSearchInput, setSearch },
+            toolbar: { searchInput, setSearchInput, setSearch, isSearch: true },
           }}
         />
       </Box>

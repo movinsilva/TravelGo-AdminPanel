@@ -1,13 +1,24 @@
-import React from "react";
-import { Box, useTheme } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, useTheme } from "@mui/material";
 import { useGetAllScheduleQuery } from "state/api";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
+import DataGridCustomToolbar from "components/DataGridCustomToolbar";
+import { useNavigate } from "react-router-dom";
 
 const Schedule = () => {
   const theme = useTheme();
   const { data, isLoading } = useGetAllScheduleQuery();
   console.log("data", data);
+
+  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+
+  const navigate = useNavigate();
+
+  const buttonFunction = () => {
+    navigate('/addschedule')
+  }
 
   const columns = [
     {
@@ -59,7 +70,8 @@ const Schedule = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="Train Schedule" subtitle="List of Train Schedule" />
+      <Header title="Train Schedule" subtitle="List of Train Schedule" buttonFunc={buttonFunction} />
+      
       <Box
         mt="40px"
         height="75vh"
@@ -96,6 +108,7 @@ const Schedule = () => {
           getRowId={(row) => row.TrainNo}
           rows={data || []}
           columns={columns}
+          slots={{ toolbar: DataGridCustomToolbar }}
         />
       </Box>
     </Box>
