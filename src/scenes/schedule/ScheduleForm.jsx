@@ -8,6 +8,7 @@ import { useGetStationQuery } from 'state/api';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import TrainMaker from 'components/trainmaker/TrainMaker';
 
 const ScheduleForm = () => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -26,10 +27,12 @@ const ScheduleForm = () => {
     
 
   const handleFormSubmit = (values) => {
-    console.log(values);
+    console.log('form values :',values);
+    console.log("🚀 ~ file: scheduleForm.jsx:34 ~ ScheduleForm ~ invertedStations:", invertedStations)
   };
 
   const [invertedStations, setInvertedStations] = useState([]);
+  
   const customHandleChange = (event) => {
     const {
       target: { value },
@@ -97,6 +100,7 @@ const ScheduleForm = () => {
             <Select
                 labelId="source"
                 value={values.source}
+                name='source'
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label="Source Station"
@@ -105,14 +109,15 @@ const ScheduleForm = () => {
             >
                 {(data.data !== undefined) ? data.data.map((station) => (
                     <MenuItem value={station.StationID}>{station.StationName}</MenuItem>
-                )) : <></>}
+                )) : <><MenuItem>Loading..</MenuItem></>}
 
             </Select>
             <InputLabel id="dest" variant='filled'>Destination Station</InputLabel>
             <Select
                 labelId="dest"
-                value={values.source}
+                value={values.dest}
                 onBlur={handleBlur}
+                name='dest'
                 onChange={handleChange}
                 label="Source Station"
                 variant='filled'
@@ -120,7 +125,7 @@ const ScheduleForm = () => {
             >
                 {(data.data !== undefined) ? data.data.map((station) => (
                     <MenuItem value={station.StationID}>{station.StationName}</MenuItem>
-                )) : <></>}
+                )) : <><MenuItem>Loading..</MenuItem></>}
             </Select>
 
             
@@ -165,7 +170,7 @@ const ScheduleForm = () => {
             >
                 {(data.data !== undefined) ? data.data.map((station) => (
                     <MenuItem value={station.StationID}>{station.StationName}</MenuItem>
-                )) : <></>}
+                )) : <> <MenuItem>Loading..</MenuItem> </>}
             </Select>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -175,8 +180,16 @@ const ScheduleForm = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs} >
                 <TimePicker label="Departure Time" variant="filled" value={values.departureTime} sx={{ gridColumn: "span 2"}} />
             </LocalizationProvider>
+
+
             
           </Box>
+                  
+          <Box m="2rem 0">
+          <TrainMaker />
+          </Box>
+
+
           <Box display="flex" justifyContent="end" mt="20px">
             <Button type="submit" color="secondary" variant="contained">
               Create New Train Schedule
@@ -194,19 +207,15 @@ const checkoutSchema = yup.object().shape({
     trainNo: yup.string().required("required"),
     trainName: yup.string().required("required"),
     trainType: yup.string().required("required"),
-    contact: yup
-      .string()
-      .required("required"),
-    address1: yup.string().required("required"),
-    address2: yup.string().required("required"),
   });
   const initialValues = {
     trainNo: "",
     trainName: "",
     trainType: "",
-    contact: "",
-    address1: "",
-    address2: "",
+    source: "",
+    dest: "",
+    arrivalTime: "",
+    departureTime: ""
   };
 
 export default ScheduleForm

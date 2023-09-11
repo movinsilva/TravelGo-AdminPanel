@@ -9,6 +9,8 @@ import Layout from "scenes/layout";
 import Schedule from "scenes/schedule";
 import TrainStops from "scenes/trainstops";
 import ScheduleForm from "scenes/schedule/ScheduleForm";
+import Overview from "scenes/overview";
+import Daily from "scenes/daily";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -26,6 +28,8 @@ function App() {
               <Route path="/trainschedule" element={<Schedule />} />
               <Route path="/trainstops" element={<TrainStops />} />
               <Route path="/addschedule" element={<ScheduleForm />} />
+              <Route path="/overview" element={<Overview />} />
+              <Route path="/daily" element={<Daily />} />
             </Route>
           </Routes>
         </ThemeProvider>
