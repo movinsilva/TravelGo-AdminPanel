@@ -8,6 +8,38 @@ const OverviewChart = ({ isDashboard = false, view }) => {
   const { data: dataMonth, isLoading } = useGetAggregatedBookingDataByMonthQuery();
   const { data: dataDay, isLoadingDay } = useGetAggregatedBookingDataByDayQuery();
 
+  var sortedDataPerMonth = null;
+
+  if (dataMonth !== undefined && dataMonth[0].monthly_data.length > 0) {
+    
+    // Assuming dataPerMonth is your array of month data
+    sortedDataPerMonth = [...dataMonth[0].monthly_data].sort((a, b) => {
+      // Define a mapping of month names to their corresponding numeric values
+      const monthOrder = {
+        'January': 1,
+        'February': 2,
+        'March': 3,
+        'April': 4,
+        'May': 5,
+        'June': 6,
+        'July': 7,
+        'August': 8,
+        'September': 9,
+        'October': 10,
+        'November': 11,
+        'December': 12,
+      };
+
+      // Convert the month names to their numeric values for comparison
+      const monthA = monthOrder[a.month.trim()];
+      const monthB = monthOrder[b.month.trim()];
+
+      // Compare the numeric values to determine the sorting order
+      return monthA - monthB;
+    });
+    
+  }
+
   var data = null;
 
   if (dataMonth !== undefined && dataDay!== undefined) {
@@ -15,7 +47,7 @@ const OverviewChart = ({ isDashboard = false, view }) => {
       totalAmountPerYear: dataMonth[0].yearly_booking_amount_total,
       totalUsersPerYear: dataMonth[0].yearly_total_customers,
       dataPerDay: dataDay[0].daily_data,
-      dataPerMonth: dataMonth[0].monthly_data,
+      dataPerMonth: sortedDataPerMonth,
     };
   }
   console.log("🚀 ~ file: OverviewChart.jsx:17 ~ OverviewChart ~ data:", data)

@@ -21,7 +21,7 @@ const Overview = () => {
             onChange={(e) => setView(e.target.value)}
           >
             <MenuItem value="sales">Sales</MenuItem>
-            <MenuItem value="units">Units</MenuItem>
+            <MenuItem value="units">Customers</MenuItem>
           </Select>
         </FormControl>
         <OverviewChart view={view} />

@@ -11,6 +11,7 @@ import TrainStops from "scenes/trainstops";
 import ScheduleForm from "scenes/schedule/ScheduleForm";
 import Overview from "scenes/overview";
 import Daily from "scenes/daily";
+import Monthly from "scenes/monthly";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -30,6 +31,7 @@ function App() {
               <Route path="/addschedule" element={<ScheduleForm />} />
               <Route path="/overview" element={<Overview />} />
               <Route path="/daily" element={<Daily />} />
+              <Route path="/monthly" element={<Monthly />} />
             </Route>
           </Routes>
         </ThemeProvider>
