@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import Header from "components/Header";
 import { ResponsiveLine } from "@nivo/line";
-import { useGetAggregatedBookingDataByDayQuery, useGetAggregatedBookingDataByMonthQuery } from "state/api";
+import { useGetAggregatedBookingDataByDayQuery, useGetAggregatedBookingDataByMonthQuery } from "state/statApi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 

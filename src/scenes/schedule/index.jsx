@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button, useTheme } from "@mui/material";
-import { useGetAllScheduleQuery } from "state/api";
+import { useGetAllScheduleQuery } from "state/trainApi";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";

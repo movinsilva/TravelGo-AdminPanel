@@ -4,7 +4,7 @@ import Header from "components/Header";
 import { ResponsiveLine } from "@nivo/line";
 import {
   useGetAggregatedBookingDataByMonthQuery,
-} from "state/api";
+} from "state/statApi";
 
 const Monthly = () => {
   const theme = useTheme();

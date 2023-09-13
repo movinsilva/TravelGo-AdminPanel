@@ -33,6 +33,7 @@ import {
   import FlexBetween from "./FlexBetween";
   import profileImage from "assets/pro_pic.webp";
   import logoimg from "assets/logo_blue.png"
+  import { useSelector } from 'react-redux';
 
   const navItems = [
     {
@@ -105,13 +106,19 @@ const Sidebar = ({
     const [active, setActive] = useState("");
     const navigate = useNavigate();
     const theme = useTheme();
+
+    const { userInfo } = useSelector((state) => state.auth);
+    var isLoggedIn = false;
   
     useEffect(() => {
       setActive(pathname.substring(1));
+      if (userInfo) {
+        isLoggedIn = true;
+      }
     }, [pathname]);
 
     return (
-        <Box component="nav">
+        <Box component="nav" >
           {isSidebarOpen && (
             <Drawer
               open={isSidebarOpen}
@@ -200,11 +207,13 @@ const Sidebar = ({
                 );
               })}
             </List>
+
+            
           </Box>
 
-          <Box position="absolute" bottom="2rem">
+          {/* <Box position='fixed' bottom="1rem">
             <Divider />
-            {/* <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
+            <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
               <Box
                 component="img"
                 alt="profile"
@@ -220,13 +229,13 @@ const Sidebar = ({
                   fontSize="0.9rem"
                   sx={{ color: theme.palette.secondary[100] }}
                 >
-                  {user.name}
+                  {userInfo.firstname}
                 </Typography>
                 <Typography
                   fontSize="0.8rem"
                   sx={{ color: theme.palette.secondary[200] }}
                 >
-                  {user.occupation}
+                  
                 </Typography>
               </Box>
               <SettingsOutlined
@@ -235,8 +244,8 @@ const Sidebar = ({
                   fontSize: "25px ",
                 }}
               />
-            </FlexBetween> */}
-            </Box>
+            </FlexBetween>
+            </Box> */}
                 </Drawer>
   )}
   </Box>

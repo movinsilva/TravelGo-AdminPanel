@@ -9,7 +9,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import { useGetWagonTypeQuery } from "state/api";
+import { useGetWagonTypeQuery } from "state/trainApi";
 import { useTheme } from "@emotion/react";
 import CancelOutlined from "@mui/icons-material/CancelOutlined";
 import ChangeCircleOutlined from "@mui/icons-material/ChangeCircleOutlined";

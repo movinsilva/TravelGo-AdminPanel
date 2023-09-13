@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
-import { useGetAggregatedBookingDataByDayQuery, useGetAggregatedBookingDataByMonthQuery } from "state/api";
+import { useGetAggregatedBookingDataByDayQuery, useGetAggregatedBookingDataByMonthQuery } from "state/statApi";
 
 const OverviewChart = ({ isDashboard = false, view }) => {
   const theme = useTheme();

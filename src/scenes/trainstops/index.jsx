@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Hidden, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetTrainStopQuery } from "state/api";
+import { useGetTrainStopQuery } from "state/trainApi";
 import Header from "components/Header";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 

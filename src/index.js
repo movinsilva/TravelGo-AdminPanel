@@ -4,16 +4,20 @@ import './index.css';
 import App from './App';
 import { configureStore } from '@reduxjs/toolkit';
 import globalReducer from 'state';
+import authReducer from './state/authSlice'
 import { Provider } from 'react-redux';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { api } from 'state/api';
+
 
 const store = configureStore({
   reducer: {
     global: globalReducer,
     [api.reducerPath]: api.reducer,
+    auth: authReducer,
   },
   middleware: (getDefault) => getDefault().concat(api.middleware),
+  devTools: true
 });
 setupListeners(store.dispatch);
 
