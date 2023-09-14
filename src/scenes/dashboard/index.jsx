@@ -18,47 +18,98 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import OverviewChart from "components/OverviewChart";
 import StatBox from "components/StatBox";
+import BreakdownChart from "components/BreakdownChart";
 
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = {data: {
-    todayStats: {totalSales: 140000,},
-    thisMonthStats: { totalSales: 12000 }
+    todayStats: {totalSales: "140 000",},
+    thisMonthStats: { totalSales: "12 000" },
+    totalCustomers: 255,
+    yearlySalesTotal: "1 450 000",
+    bookings: [
+      {
+        user: 'Alice',
+        train: 'Express 101',
+        ticketno: 1,
+        'booking-amount': 500,
+        date: '2023-09-15',
+      },
+      {
+        user: 'Bob',
+        train: 'FastTrack 202',
+        ticketno: 2,
+        'booking-amount': 800,
+        date: '2023-09-16',
+      },
+      {
+        user: 'Charlie',
+        train: 'SuperRail 303',
+        ticketno: 3,
+        'booking-amount': 1200,
+        date: '2023-09-17',
+      },
+      {
+        user: 'David',
+        train: 'MegaExpress 404',
+        ticketno: 4,
+        'booking-amount': 1500,
+        date: '2023-09-18',
+      },
+      {
+        user: 'Eve',
+        train: 'LuxuryLine 505',
+        ticketno: 5,
+        'booking-amount': 2000,
+        date: '2023-09-19',
+      },
+      {
+        user: 'Frank',
+        train: 'Speedy Express 606',
+        ticketno: 6,
+        'booking-amount': 2200,
+        date: '2023-09-20',
+      },
+      {
+        user: 'Grace',
+        train: 'SwiftRail 707',
+        ticketno: 7,
+        'booking-amount': 2700,
+        date: '2023-09-21',
+      },
+    ],
 
   }, isLoading: true}
 
   const columns = [
     {
-      field: "_id",
-      headerName: "ID",
+      field: "user",
+      headerName: "User",
+      flex: 1,
+    },{
+      field: "train",
+      headerName: "Train",
       flex: 1,
     },
-    {
-      field: "userId",
-      headerName: "User ID",
-      flex: 1,
-    },
-    {
-      field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1,
-    },
-    {
-      field: "products",
-      headerName: "# of Products",
-      flex: 0.5,
-      sortable: false,
-      renderCell: (params) => params.value.length,
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
-    },
-  ];
 
+    {
+      field: "ticketno",
+      headerName: "No of tickets",
+      flex: 1,
+    },
+    {
+      field: "booking-amount",
+      headerName: "Booking amount",
+      flex: 1,
+    },
+    {
+      field: "date",
+      headerName: "date",
+      flex: 0.5,
+    },
+    
+  ];
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
@@ -176,9 +227,8 @@ const Dashboard = () => {
           }}
         >
           <DataGrid
-            loading={isLoading || !data}
-            getRowId={(row) => row._id}
-            rows={(data && data.transactions) || []}
+            getRowId={(row) => row.user}
+            rows={(data && data.bookings) || []}
             columns={columns}
           />
         </Box>
@@ -192,12 +242,13 @@ const Dashboard = () => {
           <Typography variant="h6" sx={{ color: theme.palette.secondary[100] }}>
             Sales By Category
           </Typography>
+          <BreakdownChart isDashboard={true} />
           <Typography
             p="0 0.6rem"
             fontSize="0.8rem"
             sx={{ color: theme.palette.secondary[200] }}
           >
-            Breakdown of real states and information via category for revenue
+            Breakdown of train routes and information via routes for revenue
             made for this year and total sales.
           </Typography>
         </Box>
