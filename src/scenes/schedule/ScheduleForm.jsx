@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from 'components/Header';
-import { useGetStationQuery } from 'state/trainApi';
+import { useCreateTrainScheduleMutation, useGetStationQuery, useGetTrainFrequencyQuery } from 'state/trainApi';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -13,6 +13,9 @@ import TrainMaker from 'components/trainmaker/TrainMaker';
 const ScheduleForm = () => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const data = useGetStationQuery();
+    const frequencyData = useGetTrainFrequencyQuery();
+    const [wagons, setWagons] = useState([]);
+    const [createTrainSchedule, { isLoading }] = useCreateTrainScheduleMutation();
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -26,10 +29,26 @@ const ScheduleForm = () => {
       };
     
 
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = async (values) => {
     console.log('form values :',values);
-    console.log("🚀 ~ file: scheduleForm.jsx:34 ~ ScheduleForm ~ invertedStations:", invertedStations)
+    console.log("🚀 ~ file: scheduleForm.jsx:34 ~ ScheduleForm ~ invertedStations:", invertedStations);
+    console.log({wagons: wagons});
+
+    const res = await createTrainSchedule({ 
+      trainNo: values.trainNo,
+      trainName: values.trainName,
+      source: values.source,
+      dest: values.dest,
+      arrivalTime: values.arrivalTime,
+      departureTime: values.departureTime,
+      frequency: values.frequency,
+      defaultWagonsWithDirection: wagons,
+      invertedStations: invertedStations,
+      trainType: values.trainType,
+    })
+    console.log("🚀 ~ file: ScheduleForm.jsx:49 ~ handleFormSubmit ~ res:", res)
   };
+
 
   const [invertedStations, setInvertedStations] = useState([]);
   
@@ -96,6 +115,8 @@ const ScheduleForm = () => {
               helperText={touched.trainName && errors.trainName}
               sx={{ gridColumn: "span 4" }}
             />
+
+
             <InputLabel id="source" variant='filled'>Source Station</InputLabel>
             <Select
                 labelId="source"
@@ -109,9 +130,11 @@ const ScheduleForm = () => {
             >
                 {(data.data !== undefined) ? data.data.map((station) => (
                     <MenuItem value={station.StationID}>{station.StationName}</MenuItem>
-                )) : <><MenuItem>Loading..</MenuItem></>}
-
+                )) : <MenuItem>Loading..</MenuItem>}
             </Select>
+
+
+
             <InputLabel id="dest" variant='filled'>Destination Station</InputLabel>
             <Select
                 labelId="dest"
@@ -125,13 +148,14 @@ const ScheduleForm = () => {
             >
                 {(data.data !== undefined) ? data.data.map((station) => (
                     <MenuItem value={station.StationID}>{station.StationName}</MenuItem>
-                )) : <><MenuItem>Loading..</MenuItem></>}
+                )) : <MenuItem>Loading..</MenuItem>}
             </Select>
 
             
             <InputLabel id="frequency" variant='filled'>Frequency</InputLabel>
             <Select
                 labelId="frequency"
+                name='frequency'
                 value={values.frequency}
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -139,7 +163,19 @@ const ScheduleForm = () => {
                 variant='filled'
                 sx={{ gridColumn: "span 3"}}
             >
+                {(frequencyData.data !== undefined) ? frequencyData.data.map((freq) => (
+                  <MenuItem value={freq.FrequencyID}>{freq.Name}</MenuItem>
+                   ))
+                  
+                  :
+                  <MenuItem>Frequencies are loading ..</MenuItem>
+                }
+
             </Select>
+
+            <Button color="secondary" variant="contained" sx={{gridColumn: "span 2", margin: "8px 1rem"}}>
+              Add new frequency
+            </Button>
             
             <TextField
               fullWidth
@@ -154,6 +190,7 @@ const ScheduleForm = () => {
               helperText={touched.trainType && errors.trainType}
               sx={{ gridColumn: "span 4" }}
             />
+            <div style={{ gridColumn: "span 4"}}></div>
 
             <InputLabel id="inverted-label" variant='filled'>Inverted Station</InputLabel>
             <Select
@@ -162,7 +199,7 @@ const ScheduleForm = () => {
                 value={invertedStations}
                 onBlur={handleBlur}
                 onChange={customHandleChange}
-                label="Source Station"
+                label="Inverted Station"
                 variant='filled'
                 multiple
                 MenuProps={MenuProps}
@@ -170,15 +207,24 @@ const ScheduleForm = () => {
             >
                 {(data.data !== undefined) ? data.data.map((station) => (
                     <MenuItem value={station.StationID}>{station.StationName}</MenuItem>
-                )) : <> <MenuItem>Loading..</MenuItem> </>}
+                )) : <MenuItem>Loading..</MenuItem> }
             </Select>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <TimePicker label="Arrival Time" value={values.arrivalTime} sx={{ gridColumn: "span 2"}} />
+                <TimePicker label="Arrival Time" value={values.arrivalTime} 
+                onChange={(newArrivalTime) => {
+                  // Manually update the arrivalTime field in Formik's values
+                  handleChange({ target: { name: 'arrivalTime', value: newArrivalTime.$d } });
+                }}
+                sx={{ gridColumn: "span 2"}} slotProps={{ textField: { error: false}}} />
             </LocalizationProvider>
 
             <LocalizationProvider dateAdapter={AdapterDayjs} >
-                <TimePicker label="Departure Time" variant="filled" value={values.departureTime} sx={{ gridColumn: "span 2"}} />
+                <TimePicker label="Departure Time" variant="filled" value={values.departureTime}
+                onChange={(newDepartureTime) => {
+                  handleChange({ target: { name: 'departureTime', value: newDepartureTime.$d }})
+                }}
+                sx={{ gridColumn: "span 2"}} slotProps={{ textField: { error: false}}} />
             </LocalizationProvider>
 
 
@@ -186,7 +232,7 @@ const ScheduleForm = () => {
           </Box>
                   
           <Box m="2rem 0">
-          <TrainMaker />
+          <TrainMaker wagons={wagons} setWagons={setWagons} />
           </Box>
 
 
@@ -205,8 +251,7 @@ const ScheduleForm = () => {
 
 const checkoutSchema = yup.object().shape({
     trainNo: yup.string().required("required"),
-    trainName: yup.string().required("required"),
-    trainType: yup.string().required("required"),
+    
   });
   const initialValues = {
     trainNo: "",
@@ -214,6 +259,7 @@ const checkoutSchema = yup.object().shape({
     trainType: "",
     source: "",
     dest: "",
+    frequency: "",
     arrivalTime: "",
     departureTime: ""
   };

@@ -10,6 +10,7 @@ export const api = createApi({
     "WagonTypes",
     "AggregateDayData",
     "AggregateMonthData",
+    "Frequency"
   ],
   endpoints: (build) => ({
    

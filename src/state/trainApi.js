@@ -1,41 +1,59 @@
-import {api} from './api.js'
-
+import { api } from "./api.js";
 
 export const trainApi = api.injectEndpoints({
-    endpoints: (build) => ({
-        getStation: build.query({
-            query: () => ({
-                url: "/api/trains/stations",
-                method: "GET",
-            }),
-            providesTags: ["Station"]
-        }),
-        getAllSchedule: build.query({
-            query: () => ({
-              url: "/api/trains/admin/schedule",
-              method: "GET",
-            }),
-            providesTags: ["Schedule"],
-          }),
-          getTrainStop: build.query({
-            query: ({ page, pageSize, sort, search }) => ({
-              url: "/api/trains/admin/train-stations",
-              method: "GET",
-              params: { page, pageSize, sort, search },
-            }),
-            providesTags: ["TrainStop"],
-          }),
-          getWagonType: build.query({
-            query: () => ({
-              url: "/api/trains/admin/wagon-types",
-              method: "GET",
-            }),
-            providesTags: ["WagonTypes"],
-          }),
+  endpoints: (build) => ({
+    getStation: build.query({
+      query: () => ({
+        url: "/api/trains/stations",
+        method: "GET",
+      }),
+      providesTags: ["Station"],
+    }),
+    getAllSchedule: build.query({
+      query: () => ({
+        url: "/api/trains/admin/schedule",
+        method: "GET",
+      }),
+      providesTags: ["Schedule"],
+    }),
+    getTrainStop: build.query({
+      query: ({ page, pageSize, sort, search }) => ({
+        url: "/api/trains/admin/train-stations",
+        method: "GET",
+        params: { page, pageSize, sort, search },
+      }),
+      providesTags: ["TrainStop"],
+    }),
+    getWagonType: build.query({
+      query: () => ({
+        url: "/api/trains/admin/wagon-types",
+        method: "GET",
+      }),
+      providesTags: ["WagonTypes"],
+    }),
+    getTrainFrequency: build.query({
+      query: () => ({
+        url: "/api/trains/admin/train-frequency",
+        method: "GET",
+      }),
+      providesTags: ["Frequency"],
+    }),
+    createTrainSchedule: build.mutation({
+    query: (data) => ({
+      url: "/api/trains/admin/create-train-schedule",
+      method: "POST",
+      body: data,
     })
-})
+  })
+  }),
+  
+});
 
-export const { useGetStationQuery,
-    useGetAllScheduleQuery,
-    useGetTrainStopQuery,
-    useGetWagonTypeQuery, } = trainApi;
+export const {
+  useGetStationQuery,
+  useGetAllScheduleQuery,
+  useGetTrainStopQuery,
+  useGetWagonTypeQuery,
+  useGetTrainFrequencyQuery,
+  useCreateTrainScheduleMutation
+} = trainApi;

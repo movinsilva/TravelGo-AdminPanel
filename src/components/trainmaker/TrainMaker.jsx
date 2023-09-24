@@ -14,11 +14,9 @@ import { useTheme } from "@emotion/react";
 import CancelOutlined from "@mui/icons-material/CancelOutlined";
 import ChangeCircleOutlined from "@mui/icons-material/ChangeCircleOutlined";
 
-const TrainMaker = () => {
+const TrainMaker = ({wagons, setWagons}) => {
   const theme = useTheme();
-  const [wagons, setWagons] = useState([]);
   const data = useGetWagonTypeQuery();
-  console.log("🚀 ~ file: TrainMaker.jsx:31 ~ TrainMaker ~ data:", data);
 
   const [valueWagon, setValueWagon] = useState(
     data.data !== undefined ? data.data[0].WagonID : ""
@@ -44,7 +42,7 @@ const TrainMaker = () => {
 
   return (
     <Box border="1px solid grey" padding="1rem 1.5rem">
-      <InputLabel>Configure Wagons</InputLabel>
+      <InputLabel sx={{ display: 'contents'}}>Configure Wagons</InputLabel>
 
       <Select
         labelId="wagon-type"
@@ -54,7 +52,7 @@ const TrainMaker = () => {
         name="valueWagon"
         label="wagon"
         variant="filled"
-        sx={{ width: "25vw", margin: "10px 20px 0 0" }}
+        sx={{ width: "25vw", margin: "10px 20px 0 5%" }}
       >
         {data.data !== undefined ? (
           data.data.map((w) => (
