@@ -5,14 +5,24 @@ import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import { useNavigate } from "react-router-dom";
+import CustomModal from "components/CustomModal";
 
 const Schedule = () => {
   const theme = useTheme();
   const { data, isLoading } = useGetAllScheduleQuery();
   console.log("data", data);
 
-  const [search, setSearch] = useState("");
-  const [searchInput, setSearchInput] = useState("");
+  const [open, setOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState('');
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    console.log("Deleted: ", selectedRow)
+    setOpen(false);
+  };
 
   const navigate = useNavigate();
 
@@ -66,6 +76,36 @@ const Schedule = () => {
       headerName: "Default Total Seats",
       flex: 0.7,
     },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 0.7,
+      renderCell: (params) => (
+        <div>
+          <Button
+            variant="outlined"
+            color="secondary"
+            sx={{
+              marginRight: '7px'
+            }}
+            
+          >
+            Edit
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              setSelectedRow(params.row.TrainNo);
+              handleClickOpen();
+            }}
+            
+          >
+            Delete
+          </Button>
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -111,6 +151,13 @@ const Schedule = () => {
           slots={{ toolbar: DataGridCustomToolbar }}
         />
       </Box>
+
+      <CustomModal 
+        open={open} 
+        handleClose={handleClose}
+        title={`Are you sure to delete this entry?`}
+        content={`8716 Colombo Commuter`}
+        />
     </Box>
   );
 };

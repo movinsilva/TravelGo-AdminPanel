@@ -4,101 +4,11 @@ import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import { useNavigate } from "react-router-dom";
+import { useGetWagonTypeQuery } from "state/trainApi";
 
 const Wagon = () => {
     const theme = useTheme();
-    const { data, isLoading } = {data: [
-        {
-          wagonID: 1,
-          class: 'First Class',
-          seats: 55,
-          amenities: 'Wi-Fi, AC, Meal Service',
-        },
-        {
-          wagonID: 2,
-          class: 'First Class',
-          seats: 50,
-          amenities: 'Wi-Fi, AC, Meal Service',
-        },
-        {
-          wagonID: 3,
-          class: 'First Class',
-          seats: 45,
-          amenities: 'Wi-Fi, AC, Meal Service',
-        },
-        {
-          wagonID: 4,
-          class: 'Business Class',
-          seats: 58,
-          amenities: 'Wi-Fi, AC, Snack Bar',
-        },
-        {
-          wagonID: 5,
-          class: 'Business Class',
-          seats: 52,
-          amenities: 'Wi-Fi, AC, Snack Bar',
-        },
-        {
-          wagonID: 6,
-          class: 'Business Class',
-          seats: 47,
-          amenities: 'Wi-Fi, AC, Snack Bar',
-        },
-        {
-          wagonID: 7,
-          class: 'Economy Class',
-          seats: 60,
-          amenities: 'AC',
-        },
-        {
-          wagonID: 8,
-          class: 'Economy Class',
-          seats: 55,
-          amenities: 'AC',
-        },
-        {
-          wagonID: 9,
-          class: 'Economy Class',
-          seats: 52,
-          amenities: 'AC',
-        },
-        {
-          wagonID: 10,
-          class: 'Standard Class',
-          seats: 48,
-          amenities: 'AC',
-        },
-        {
-          wagonID: 11,
-          class: 'Standard Class',
-          seats: 43,
-          amenities: 'AC',
-        },
-        {
-          wagonID: 12,
-          class: 'Standard Class',
-          seats: 41,
-          amenities: 'AC',
-        },
-        {
-          wagonID: 13,
-          class: 'Economy Class',
-          seats: 59,
-          amenities: 'AC, Snack Bar',
-        },
-        {
-          wagonID: 14,
-          class: 'Economy Class',
-          seats: 53,
-          amenities: 'AC, Snack Bar',
-        },
-        {
-          wagonID: 15,
-          class: 'Economy Class',
-          seats: 50,
-          amenities: 'AC, Snack Bar',
-        },
-      ], isLoading: false}
+    const { data, isLoading } = useGetWagonTypeQuery();
     console.log("data", data);
   
     const [search, setSearch] = useState("");
@@ -112,25 +22,35 @@ const Wagon = () => {
   
     const columns = [
       {
-        field: "wagonID",
+        field: "WagonID",
         headerName: "Wagon ID",
+        flex: 0.3,
+      },
+      {
+        field: "Class",
+        headerName: "Wagon class",
+        flex: 0.6,
+      },
+      {
+        field: "Description",
+        headerName: "Description",
+        flex: 1,
+      },
+      {
+        field: "Capacity",
+        headerName: "No. of seats",
         flex: 0.4,
       },
       {
-        field: "class",
-        headerName: "Wagon class",
-        flex: 1,
-      },
-      {
-        field: "seats",
-        headerName: "No. of seats",
-        flex: 1,
-      },
-      {
-        field: "amenities",
+        field: "Amenities",
         headerName: "Amenities for the wagon",
-        flex: 1,
+        flex: 1.5,
       },
+      {
+        field: "HasTables",
+        headerName: "Tables Availability",
+        flex: 0.6
+      }
       
     ];
 
@@ -171,7 +91,7 @@ const Wagon = () => {
       >
         <DataGrid
           loading={isLoading || !data}
-          getRowId={(row) => row.wagonID}
+          getRowId={(row) => row.WagonID}
           rows={data || []}
           columns={columns}
           slots={{ toolbar: DataGridCustomToolbar }}

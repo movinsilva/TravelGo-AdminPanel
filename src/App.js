@@ -16,6 +16,8 @@ import Login from "scenes/login";
 import Breakdown from "scenes/breakdown";
 import Station from "scenes/stations";
 import Wagon from "scenes/wagons";
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -26,6 +28,7 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <ToastContainer/>
           <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />

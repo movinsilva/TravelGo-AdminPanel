@@ -12,77 +12,43 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "components/Header";
 import {
-  useCreateTrainScheduleMutation,
   useGetStationQuery,
-  useGetTrainFrequencyQuery,
 } from "state/trainApi";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import TrainMaker from "components/trainmaker/TrainMaker";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const ScheduleForm = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-  const data = useGetStationQuery();
-  const frequencyData = useGetTrainFrequencyQuery();
-  const [wagons, setWagons] = useState([]);
-  const [createTrainSchedule, { isLoading }] = useCreateTrainScheduleMutation();
-  const [invertedStations, setInvertedStations] = useState([]);
-  const navigate = useNavigate();
+const TrainStopForm = () => {
 
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+      PaperProps: {
+        style: {
+          maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+          width: 250,
+        },
       },
-    },
-  };
+    };
 
+    const handleFormSubmit = async (values) => {
 
-
-  const handleFormSubmit = async (values) => {
-
-    try {
-      const res = await createTrainSchedule({
-        trainNo: values.trainNo,
-        trainName: values.trainName,
-        source: values.source,
-        dest: values.dest,
-        arrivalTime: values.arrivalTime,
-        departureTime: values.departureTime,
-        frequency: values.frequency,
-        defaultWagonsWithDirection: wagons,
-        invertedStations: invertedStations,
-        trainType: values.trainType,
-      }).unwrap();
-
-      toast.success("successfully created train schedule!")
-      navigate("/trainschedule")
-    } catch (err) {
-        toast.error(err.data.message)
-        
-    }
-
+        try {
+          
     
-
-  };
-
-  const customHandleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setInvertedStations(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
+          toast.success("successfully created train stop!")
+          navigate("/trainstops")
+        } catch (err) {
+            toast.error(err.data.message)
+            
+        }
+    
+        
+    
+      };
 
 
 
@@ -342,28 +308,7 @@ const ScheduleForm = () => {
       </Box>
 
     </Box>
-  );
-};
+  )
+}
 
-const checkoutSchema = yup.object().shape({
-  trainNo: yup.string().required("required"),
-  trainName: yup.string().required("Train Name is required"),
-  trainType: yup.string().required("Train Type is required"),
-  source: yup.string().required("Source Station is required"),
-  dest: yup.string().required("Destination Station is required"),
-  frequency: yup.string().required("Frequency is required"),
-  arrivalTime: yup.string().required("Arrival Time is required"),
-  departureTime: yup.string().required("Departure Time is required"),
-});
-const initialValues = {
-  trainNo: "",
-  trainName: "",
-  trainType: "",
-  source: "",
-  dest: "",
-  frequency: "",
-  arrivalTime: "",
-  departureTime: "",
-};
-
-export default ScheduleForm;
+export default TrainStopForm
