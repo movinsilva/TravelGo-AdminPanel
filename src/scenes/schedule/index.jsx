@@ -1,30 +1,38 @@
 import React, { useState } from "react";
 import { Box, Button, useTheme } from "@mui/material";
-import { useGetAllScheduleQuery } from "state/trainApi";
+import { useGetAllScheduleQuery, useDeleteTrainScheduleMutation } from "state/trainApi";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import { useNavigate } from "react-router-dom";
 import CustomModal from "components/CustomModal";
+import { toast } from "react-toastify";
 
 const Schedule = () => {
   const theme = useTheme();
-  const { data, isLoading } = useGetAllScheduleQuery();
+  const { data, isLoading, refetch } = useGetAllScheduleQuery();
   console.log("data", data);
 
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState('');
+  const [deleteSchedule] = useDeleteTrainScheduleMutation();
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
-    console.log("Deleted: ", selectedRow)
+  const handleClose = async() => {
+    try {
+      const res = await deleteSchedule({ TrainNo: `${selectedRow}`}).unwrap();
+      toast.success(`${selectedRow} Train was deleted!`)
+      refetch();
+    } catch (err) {
+      toast.error(err.data.message);
+    }
     setOpen(false);
   };
 
-  const navigate = useNavigate();
 
   const buttonFunction = () => {
     navigate('/addschedule')
@@ -74,7 +82,7 @@ const Schedule = () => {
     {
       field: "DefaultTotalSeats",
       headerName: "Default Total Seats",
-      flex: 0.7,
+      flex: 0.6,
     },
     {
       field: "actions",
@@ -82,16 +90,7 @@ const Schedule = () => {
       flex: 0.7,
       renderCell: (params) => (
         <div>
-          <Button
-            variant="outlined"
-            color="secondary"
-            sx={{
-              marginRight: '7px'
-            }}
-            
-          >
-            Edit
-          </Button>
+          
           <Button
             variant="outlined"
             color="error"

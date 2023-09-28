@@ -44,6 +44,13 @@ export const trainApi = api.injectEndpoints({
       method: "POST",
       body: data,
     })
+  }),
+  deleteTrainSchedule: build.mutation({
+    query: (data) => ({
+      url: "/api/trains//admin/delete-train-schedule",
+      method: "DELETE",
+      params: data
+    })
   })
   }),
   
@@ -55,5 +62,6 @@ export const {
   useGetTrainStopQuery,
   useGetWagonTypeQuery,
   useGetTrainFrequencyQuery,
-  useCreateTrainScheduleMutation
+  useCreateTrainScheduleMutation,
+  useDeleteTrainScheduleMutation,
 } = trainApi;
