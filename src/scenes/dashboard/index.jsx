@@ -19,95 +19,45 @@ import { DataGrid } from "@mui/x-data-grid";
 import OverviewChart from "components/OverviewChart";
 import StatBox from "components/StatBox";
 import BreakdownChart from "components/BreakdownChart";
+import { useGetStatBoxDataQuery } from "state/trainApi";
 
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const { data, isLoading } = {data: {
-    todayStats: {totalSales: "140 000",},
-    thisMonthStats: { totalSales: "12 000" },
-    totalCustomers: 255,
-    yearlySalesTotal: "1 450 000",
-    bookings: [
-      {
-        user: 'Alice',
-        train: 'Express 101',
-        ticketno: 1,
-        'booking-amount': 500,
-        date: '2023-09-15',
-      },
-      {
-        user: 'Bob',
-        train: 'FastTrack 202',
-        ticketno: 2,
-        'booking-amount': 800,
-        date: '2023-09-16',
-      },
-      {
-        user: 'Charlie',
-        train: 'SuperRail 303',
-        ticketno: 3,
-        'booking-amount': 1200,
-        date: '2023-09-17',
-      },
-      {
-        user: 'David',
-        train: 'MegaExpress 404',
-        ticketno: 4,
-        'booking-amount': 1500,
-        date: '2023-09-18',
-      },
-      {
-        user: 'Eve',
-        train: 'LuxuryLine 505',
-        ticketno: 5,
-        'booking-amount': 2000,
-        date: '2023-09-19',
-      },
-      {
-        user: 'Frank',
-        train: 'Speedy Express 606',
-        ticketno: 6,
-        'booking-amount': 2200,
-        date: '2023-09-20',
-      },
-      {
-        user: 'Grace',
-        train: 'SwiftRail 707',
-        ticketno: 7,
-        'booking-amount': 2700,
-        date: '2023-09-21',
-      },
-    ],
-
-  }, isLoading: true}
+  
+  const { data, isLoading } = useGetStatBoxDataQuery();
 
   const columns = [
     {
-      field: "user",
-      headerName: "User",
-      flex: 1,
+      field: "TrainNo",
+      headerName: "Train No",
+      flex: 0.4,
     },{
-      field: "train",
+      field: "TrainName",
       headerName: "Train",
       flex: 1,
     },
 
     {
-      field: "ticketno",
-      headerName: "No of tickets",
+      field: "Amount",
+      headerName: "Amount",
+      flex: 0.6,
+    },
+    {
+      field: "Source",
+      headerName: "Source",
       flex: 1,
     },
     {
-      field: "booking-amount",
-      headerName: "Booking amount",
+      field: "Destination",
+      headerName: "Destination",
       flex: 1,
     },
     {
-      field: "date",
-      headerName: "date",
-      flex: 0.5,
-    },
+      field: "BookingDate",
+      headerName: "Date",
+      flex: 0.6
+    }
     
   ];
   return (
@@ -142,11 +92,13 @@ const Dashboard = () => {
         }}
       >
         {/* ROW 1 */}
-        <StatBox
-          title="Total Customers"
-          value={data && data.totalCustomers}
-          increase="+14%"
-          description="Since last month"
+        {isLoading ? <>Waiting for data...</> :
+            <>
+              <StatBox
+          title="Total Users"
+          value={data && data.total_users}
+          increase={`+${data && data.new_users_current_month}`}
+          description="New Users this month"
           icon={
             <Email
               sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
@@ -155,15 +107,17 @@ const Dashboard = () => {
         />
         <StatBox
           title="Sales Today"
-          value={data && data.todayStats.totalSales}
-          increase="+21%"
-          description="Since last month"
+          value={data && data.TotalSales}
+          increase={`${data && data.salesDayGain}%`}
+          description="Since yesterday"
           icon={
             <PointOfSale
               sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
             />
           }
         />
+            </>
+        } 
         <Box
           gridColumn="span 8"
           gridRow="span 2"
@@ -175,8 +129,8 @@ const Dashboard = () => {
         </Box>
         <StatBox
           title="Monthly Sales"
-          value={data && data.thisMonthStats.totalSales}
-          increase="+5%"
+          value={data && data.TotalSalesCurrentMonth}
+          increase={`${data && data.salesMonthlyGain}%`}
           description="Since last month"
           icon={
             <PersonAdd
@@ -186,9 +140,9 @@ const Dashboard = () => {
         />
         <StatBox
           title="Yearly Sales"
-          value={data && data.yearlySalesTotal}
-          increase="+43%"
-          description="Since last month"
+          value={data && data.TotalSalesCurrentYear}
+          increase={`${data && data.salesYearlyGain}%`}
+          description="Since last year"
           icon={
             <Traffic
               sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
@@ -227,7 +181,8 @@ const Dashboard = () => {
           }}
         >
           <DataGrid
-            getRowId={(row) => row.user}
+          loading={isLoading || !data}
+            getRowId={(row) => row.BookingID}
             rows={(data && data.bookings) || []}
             columns={columns}
           />

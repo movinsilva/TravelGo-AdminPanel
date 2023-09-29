@@ -17,7 +17,7 @@ const Wagon = () => {
     const navigate = useNavigate();
   
     const buttonFunction = () => {
-      navigate('/addschedule')
+      navigate('/addwagon')
     }
   
     const columns = [
@@ -56,7 +56,7 @@ const Wagon = () => {
 
   return (
    <Box m="1.5rem 2.5rem">
-      <Header title="Train Schedule" subtitle="List of Train Schedule" buttonFunc={buttonFunction} />
+      <Header title="Wagons" subtitle="List of Wagons" buttonFunc={buttonFunction} />
       
       <Box
         mt="40px"

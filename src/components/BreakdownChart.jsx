@@ -14,7 +14,6 @@ const BreakdownChart = ({ isDashboard = false }) => {
       ],
   }, isLoading: false}
   const theme = useTheme();
- console.log("🚀 ~ file: BreakdownChart.jsx:8 ~ BreakdownChart ~ data:", data)
   if (!data || isLoading) return "Loading...";
 
   const colors = [
@@ -24,7 +23,6 @@ const BreakdownChart = ({ isDashboard = false }) => {
     theme.palette.secondary[300],
   ];
   
-  console.log("🚀 ~ file: BreakdownChart.jsx:28 ~ BreakdownChart ~ data.salesByCategory:", data.salesByCategory)
   const formattedData = (data.salesByCategory).map(
     
     (item, i) =>  ({
@@ -34,7 +32,6 @@ const BreakdownChart = ({ isDashboard = false }) => {
       color: colors[i],
     })
   );
-  console.log("🚀 ~ file: BreakdownChart.jsx:31 ~ BreakdownChart ~ formattedData:", formattedData)
 
   return (
     <Box

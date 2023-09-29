@@ -18,6 +18,7 @@ import Station from "scenes/stations";
 import Wagon from "scenes/wagons";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import WagonForm from "scenes/wagons/WagonForm";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -43,6 +44,7 @@ function App() {
               <Route path="/breakdown" element={<Breakdown />} />
               <Route path="/stations" element={<Station />} />
               <Route path="/wagons" element={<Wagon />} />
+              <Route path="/addwagon" element={<WagonForm />} />
             </Route>
           </Routes>
         </ThemeProvider>

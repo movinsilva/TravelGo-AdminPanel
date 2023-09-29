@@ -51,6 +51,19 @@ export const trainApi = api.injectEndpoints({
       method: "DELETE",
       params: data
     })
+  }),
+  getStatBoxData: build.query({
+    query: () => ({
+      url: "/api/trains/admin/stat-box-data",
+      method: "GET"
+    })
+  }),
+  createWagon: build.mutation({
+    query: (data) => ({
+      url: "/api/trains/admin/create-wagon",
+      method: "POST",
+      body: data,
+    })
   })
   }),
   
@@ -64,4 +77,6 @@ export const {
   useGetTrainFrequencyQuery,
   useCreateTrainScheduleMutation,
   useDeleteTrainScheduleMutation,
+  useGetStatBoxDataQuery,
+  useCreateWagonMutation,
 } = trainApi;

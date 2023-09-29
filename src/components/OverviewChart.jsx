@@ -50,7 +50,6 @@ const OverviewChart = ({ isDashboard = false, view }) => {
       dataPerMonth: sortedDataPerMonth,
     };
   }
-  console.log("🚀 ~ file: OverviewChart.jsx:17 ~ OverviewChart ~ data:", data)
   
   
   const [totalSalesLine, totalUnitsLine] = useMemo(() => {
