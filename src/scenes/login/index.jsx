@@ -21,7 +21,6 @@ const Login = () => {
     const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  var femail, fpassword;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

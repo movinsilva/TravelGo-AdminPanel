@@ -26,6 +26,7 @@ const Dashboard = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   
   const { data, isLoading } = useGetStatBoxDataQuery();
+  console.log("🚀 ~ file: index.jsx:29 ~ Dashboard ~ data:", data)
 
   const columns = [
     {
@@ -108,7 +109,7 @@ const Dashboard = () => {
         <StatBox
           title="Sales Today"
           value={data && data.TotalSales}
-          increase={`${data && data.salesDayGain}%`}
+          increase={(data && data.salesDayGain !== ("NaN")) ? `${data && data.salesDayGain}%` : 'No sales'}
           description="Since yesterday"
           icon={
             <PointOfSale
