@@ -22,6 +22,10 @@ const Schedule = () => {
     setOpen(true);
   };
 
+  const handleNo = async () => {
+    setOpen(false);
+  }
+
   const handleClose = async() => {
     try {
       const res = await deleteSchedule({ TrainNo: `${selectedRow}`}).unwrap();
@@ -154,6 +158,7 @@ const Schedule = () => {
       <CustomModal 
         open={open} 
         handleClose={handleClose}
+        handleNo={handleNo}
         title={`Are you sure to delete this entry?`}
         content={`8716 Colombo Commuter`}
         />

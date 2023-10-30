@@ -81,17 +81,14 @@ import {
       icon: <PieChartOutlined />,
     },
     {
-      text: "Management",
+      text: "Prices",
       icon: null,
     },
     {
-      text: "Admin",
+      text: "BookingPrices",
       icon: <AdminPanelSettingsOutlined />,
     },
-    {
-      text: "Performance",
-      icon: <TrendingUpOutlined />,
-    },
+    
   ];
 
 

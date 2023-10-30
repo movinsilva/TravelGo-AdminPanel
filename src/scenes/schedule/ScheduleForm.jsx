@@ -237,7 +237,7 @@ const ScheduleForm = () => {
                   color="secondary"
                   variant="contained"
                   onClick={() => {
-                    toast.error("testing")
+                    navigate("/addfrequency")
                   }}
                   sx={{ gridColumn: "span 2", margin: "8px 1rem" }}
                 >

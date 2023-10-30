@@ -2,13 +2,13 @@ import React from 'react'
 import { Dialog, Button, DialogTitle, DialogActions, DialogContent, DialogContentText, Slide } from '@mui/material'
 import successGif from 'assets/success.gif';
 
-const CustomModal = ({open, handleClose, title, content}) => {
+const CustomModal = ({open, handleClose,handleNo, title, content}) => {
 
   return (
     <Dialog
     open={open}
     keepMounted
-    onClose={handleClose}
+    onClose={handleNo}
     aria-describedby="alert-dialog-slide-description"
   >
     <DialogTitle>{title}</DialogTitle>
@@ -18,7 +18,7 @@ const CustomModal = ({open, handleClose, title, content}) => {
       </DialogContentText> 
     </DialogContent>
     <DialogActions sx={{ margin: '5%'}}>
-    <Button variant='contained' color='secondary' onClick={handleClose}>Disagree</Button>
+    <Button variant='contained' color='secondary' onClick={handleNo}>Disagree</Button>
       <Button variant='contained' color='error' onClick={handleClose}>Agree</Button>
     </DialogActions>
   </Dialog>

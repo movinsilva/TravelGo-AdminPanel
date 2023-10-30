@@ -64,7 +64,20 @@ export const trainApi = api.injectEndpoints({
       method: "POST",
       body: data,
     })
-  })
+  }),
+  createFrequency: build.mutation({
+    query: (data) => ({
+      url: "/api/trains/admin/create-frequency",
+      method: "POST",
+      body: data,
+    })
+  }),
+  getBookingPriceData: build.query({
+    query: () => ({
+      url: "/api/booking/admin/bookingprice",
+      method: "GET"
+    })
+  }),
   }),
   
 });
@@ -79,4 +92,6 @@ export const {
   useDeleteTrainScheduleMutation,
   useGetStatBoxDataQuery,
   useCreateWagonMutation,
+  useCreateFrequencyMutation,
+  useGetBookingPriceDataQuery
 } = trainApi;

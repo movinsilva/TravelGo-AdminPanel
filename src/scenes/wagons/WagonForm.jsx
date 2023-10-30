@@ -42,7 +42,7 @@ const WagonForm = () => {
         navigate("/wagons");
     } catch (err) {
         console.log("🚀 ~ file: WagonForm.jsx:44 ~ handleFormSubmit ~ err:", err)
-        toast.error("some error");
+        toast.error(err.data.message);
     }
     
   };

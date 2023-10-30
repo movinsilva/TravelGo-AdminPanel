@@ -36,7 +36,7 @@ const Station = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="Train Stations" subtitle="List of Train Stations" buttonFunc={buttonFunction} />
+      <Header title="Train Stations" subtitle="List of Train Stations"  />
       
       <Box
         mt="40px"
