@@ -1,0 +1,38 @@
+name: Build and deploy system
+
+on:
+  push:
+    branches: 
+      - "deploy"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Build Docker Image
+      run: docker build . -t movinsilva/travelgo-admin:latest
+
+    - name: Log in to Docker Hub
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Push Docker Image to Docker Hub
+      run: docker push movinsilva/travelgo-admin:latest
+      
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    steps:
+    - name: stop current container
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | sudo -S sudo docker stop travelgo-admin-container || true
+    - name: remove current container
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | sudo -S sudo docker rm travelgo-admin-container || true
+    - name: remove current image
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | sudo -S sudo docker rmi movinsilva/travelgo-admin:latest -f || true
+    - name: pull new image
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | sudo -S sudo docker pull movinsilva/travelgo-admin:latest
+    - name: run new container
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | sudo -S sudo docker run -p 3000:3000 -d --name travelgo-admin-container  movinsilva/travelgo-admin:latest
